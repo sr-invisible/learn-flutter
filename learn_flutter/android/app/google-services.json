@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "397470594240",
+    "project_id": "learn-futter",
+    "storage_bucket": "learn-futter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397470594240:android:1ab23e185d321f1dd36925",
+        "android_client_info": {
+          "package_name": "com.example.learn_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "397470594240-2nfijde2jf4413oit4f0ajfnio086ic2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXxrr8Q5ZJXPHAHNYiXSv3zo4F0fYjaJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "397470594240-2nfijde2jf4413oit4f0ajfnio086ic2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
