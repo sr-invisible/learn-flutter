@@ -44,7 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
       appBar: AppBar(title: Text('Learn Flutter')),
-      body: Text('sdf'),
+      body: Column(children: [
+        TextButton(onPressed: () => Navigator.pushNamed(context, '/google-map'), child: Text('Google Map')),
+      ]),
 
     ));
   }

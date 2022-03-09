@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_flutter/services/local_notification_service.dart';
+import 'package:learn_flutter/view/screen/google_map_screen.dart';
 import 'package:learn_flutter/view/screen/green_screen.dart';
 import 'package:learn_flutter/view/screen/home_screen.dart';
 
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomeScreen(),
         '/green': (context) => GreenScreen(),
+        '/google-map': (context) => GoogleMapScreen(),
       },
     );
   }

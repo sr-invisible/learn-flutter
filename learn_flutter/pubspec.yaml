@@ -13,6 +13,8 @@ dependencies:
   firebase_messaging: ^11.2.8
   flutter_local_notifications: ^9.4.0
   firebase_core: ^1.13.1
+  google_maps_flutter: ^2.1.2
+  geolocator: ^8.2.0
 
 dev_dependencies:
   flutter_test:
@@ -24,9 +26,8 @@ flutter:
 
   uses-material-design: true
 
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+   - assets/image/gmap-marker.png
 
   # example:
   # fonts:
