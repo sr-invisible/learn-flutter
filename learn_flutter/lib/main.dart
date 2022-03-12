@@ -1,10 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:learn_flutter/helper/route_helper.dart';
 import 'package:learn_flutter/services/local_notification_service.dart';
 import 'package:learn_flutter/view/screen/google_map_screen.dart';
 import 'package:learn_flutter/view/screen/green_screen.dart';
 import 'package:learn_flutter/view/screen/home_screen.dart';
+
+import 'helper/get_di.dart';
 
 //receive message when app is in background
 Future<void> backgroundHandler(RemoteMessage m) async {
@@ -17,6 +21,8 @@ Future<void> main() async {
   LocalNotificationService.initialise();
  await Firebase.initializeApp();
 
+ init();
+
  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 
   runApp(const MyApp());
@@ -27,17 +33,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => HomeScreen(),
-        '/green': (context) => GreenScreen(),
-        '/google-map': (context) => GoogleMapScreen(),
-      },
+      initialRoute: RouteHelper.getInitialRoute(),
+      getPages: RouteHelper.routes,
     );
   }
 }

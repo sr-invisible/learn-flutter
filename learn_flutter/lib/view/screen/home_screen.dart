@@ -1,14 +1,20 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:learn_flutter/helper/route_helper.dart';
 import 'package:learn_flutter/services/local_notification_service.dart';
 
 class HomeScreen extends StatefulWidget {
-
+ String? address;
+ HomeScreen({@required this.address});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late final FirebaseMessaging _messaging ;
+
   @override
   void initState() {
     super.initState();
@@ -38,14 +44,14 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.pushNamed(context, '/$routeFromMessage');
 
     });
+        }
 
-  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
-      appBar: AppBar(title: Text('Learn Flutter')),
+      appBar: AppBar(title:  Text( widget.address != null ? widget.address! : 'Learn Flutter', style: TextStyle(fontSize: 12))),
       body: Column(children: [
-        TextButton(onPressed: () => Navigator.pushNamed(context, '/google-map'), child: Text('Google Map')),
+        TextButton(onPressed: () => Get.offNamed(RouteHelper.gMap), child: Text('Google Map')),
       ]),
 
     ));

@@ -6,7 +6,8 @@ class GreenScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('green screen'),
+      appBar: AppBar(title: const Text('Green Screen'),),
+      body: const Text('green screen'),
     );
   }
 }

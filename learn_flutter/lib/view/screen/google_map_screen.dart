@@ -1,80 +1,84 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:learn_flutter/controller/location_controller.dart';
+import 'package:learn_flutter/helper/route_helper.dart';
 
 class GoogleMapScreen extends StatefulWidget {
-  const GoogleMapScreen();
+  GoogleMapScreen();
+
   @override
   State<GoogleMapScreen> createState() => _GoogleMapScreenState();
 }
 
 class _GoogleMapScreenState extends State<GoogleMapScreen> {
-GoogleMapController? _googleMapController;
-Position? currentLocation;
-Set<Marker> _markers = {};
- BitmapDescriptor? mapMarker;
+  GoogleMapController? _googleMapController;
+  Position? currentLocation;
+  CameraPosition? _cameraPosition;
 
-  CameraPosition _initialCameraPosition = CameraPosition(target: LatLng(23.777176,90.399452),zoom: 11.5);
-  Future<void> setCustomMarker() async {
-    mapMarker = await BitmapDescriptor.fromAssetImage(ImageConfiguration(), "assets/image/gmap-marker.png");
+  final CameraPosition _initialCameraPosition = CameraPosition(target: const LatLng(23.777176, 90.399452), zoom: 11.5);
+
+  @override
+  void initState() {
+    super.initState();
+    // Get.find<LocationController>().getCurrentAddress();
   }
-   _getLocation()  async {
-     bool serviceEnabled;
-     LocationPermission permission;
-     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-     if(!serviceEnabled){
-       return Future.error("Location service are disabled");
-     }
-     permission = await Geolocator.checkPermission();
-     if(permission == LocationPermission.denied){
-       permission = await Geolocator.requestPermission();
-       if(permission == LocationPermission.denied){
-         return Future.error("Location permissions are disabled");
-       }
-     }
-     if(permission == LocationPermission.deniedForever){
-       return Future.error("Location permissions are permanently denied, we cannot request permissions");
-     }
-     currentLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-     var newPosition = CameraPosition(target: LatLng(currentLocation!.latitude , currentLocation!.longitude),zoom: 16);
-     CameraUpdate update = CameraUpdate.newCameraPosition(newPosition);
-     _googleMapController!.animateCamera(update);
-     _markers.add(Marker(markerId: MarkerId('id-1'),position: LatLng(currentLocation!.latitude , currentLocation!.longitude), infoWindow: InfoWindow(title: "My Location")));
-   }
 
-   void _onMapCreated(GoogleMapController googleMapController) {
-    setState(() {
-      _googleMapController = googleMapController;
-      _markers.add(Marker(markerId: MarkerId('id-1'),position: LatLng(currentLocation!.latitude , currentLocation!.longitude), infoWindow: InfoWindow(title: "My Location")));
-      _markers.add(const Marker(markerId: MarkerId('id-2'),position:  LatLng(23.777176,90.399452), infoWindow: InfoWindow(title: "Title")));
-    });
-   }
-
-   @override
+  @override
   void dispose() {
-     _googleMapController!.dispose();
+    _googleMapController!.dispose();
     super.dispose();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(body: GoogleMap(
-        myLocationButtonEnabled: true,
-        zoomControlsEnabled: false,
-        initialCameraPosition: _initialCameraPosition,
-      mapToolbarEnabled: true,
-      onMapCreated: _onMapCreated,
-      markers: _markers,
+    TextEditingController nameController = TextEditingController();
+    return SafeArea(
+        child: Scaffold(
+      body: GetBuilder<LocationController>(builder: (controller) {
+        return Stack(
+          children: [
+            GoogleMap(
+              myLocationButtonEnabled: true,
+              zoomControlsEnabled: false,
+              initialCameraPosition: _initialCameraPosition,
+              mapToolbarEnabled: true,
+              onMapCreated: (GoogleMapController mapController) {
+                _googleMapController = mapController;
+              },
+              onCameraMove: (CameraPosition cameraPosition) {
+                _cameraPosition = cameraPosition;
+              },
+              onCameraIdle: () {Get.find<LocationController>().updatePosition(_cameraPosition!);} ,
+              // markers: controller.marker,
+            ),
 
-    ),
+                Positioned(top: 20, left: 40,
+                  child: controller.adderss != null ? Container( height: 40, alignment: Alignment.center,color: Colors.grey.shade500,padding: EdgeInsets.all(10),
+                        child: Text('${controller.adderss} ',style: const TextStyle(color: Colors.white))) : Container(),
+                ),
+
+            Center(child: Image.asset('assets/image/gmap-marker.png', height: 55,width: 30)),
+
+            Positioned(left: 100,bottom: 30,
+              child: ElevatedButton(onPressed: () {
+                    Get.offNamed(RouteHelper.getHomeRoute(Get.find<LocationController>().adderss));
+                    Get.find<LocationController>().getCurrentLocation(googleMapController: _googleMapController);
+                  },
+                  child: const Padding(padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: Text('Pick Location')))),
+          ],
+        );
+      }),
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () => _getLocation(),
-        child: Icon(Icons.my_location),
+        onPressed: () => Get.find<LocationController>().getCurrentLocation(googleMapController: _googleMapController),
+        child: const Icon(Icons.my_location),
       ),
     ));
   }
