@@ -1,0 +1,17 @@
+{
+  "full_name" : "الاسم الكامل",
+  "country" : "دولة",
+  "web_page" : "صفحة ويب",
+  "pick_location" : "اختر الموقع",
+  "user_name" : "اسم االمستخدم",
+  "email" : "بريد الالكتروني",
+  "phone" : "هاتف",
+  "date_of_birth" : "تاريخ الميلاد",
+  "gender" : "جنس",
+  "notification" : "تنبيه",
+  "notification_alert" : "تنبيه الإخطار",
+  "message_title" : "عنوان الرسالة",
+  "age" : "سن",
+  "pick_your_location" : "اختر موقعك",
+  "" : ""
+}

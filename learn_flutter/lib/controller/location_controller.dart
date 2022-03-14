@@ -6,15 +6,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationController extends GetxController implements GetxService {
   GoogleMapController? _googleMapController;
-  Position? currentLocation;
-  Set<Marker> _markers = {};
+  Position? _currentLocation;
+  final Set<Marker> _markers = {};
   BitmapDescriptor? _mapMarker;
   String _address = '';
   CameraPosition? _initialCameraPosition;
 
   GoogleMapController get googleMapController => _googleMapController!;
   Set<Marker> get marker => _markers;
-  String get adderss => _address;
+  String? get address => _address;
+  Position? get currentLocation => _currentLocation;
   CameraPosition get initialCameraPosition => _initialCameraPosition!;
 
   void mapCreator(GoogleMapController getController) {
@@ -27,7 +28,7 @@ class LocationController extends GetxController implements GetxService {
   }
 
   Future<void> setCustomMarker() async {
-    _mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(devicePixelRatio: 3.5, size: Size(15, 15)),"assets/image/gmap-marker.png");
+    _mapMarker = await BitmapDescriptor.fromAssetImage(const ImageConfiguration(devicePixelRatio: 3.5, size: Size(15, 15)),"assets/images/gmap-marker.png");
     update();
   }
 
@@ -53,19 +54,19 @@ class LocationController extends GetxController implements GetxService {
       return Future.error("Location permissions are permanently denied, we cannot request permissions");
     }
 
-    currentLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    _currentLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-    var newPosition = CameraPosition(target: LatLng(currentLocation!.latitude, currentLocation!.longitude),zoom: 16);
+    var newPosition = CameraPosition(target: LatLng(_currentLocation!.latitude, _currentLocation!.longitude),zoom: 16);
 
     CameraUpdate cameraUpdate = CameraUpdate.newCameraPosition(newPosition);
 
     _googleMapController!.animateCamera(cameraUpdate);
 
     _markers.add(Marker(
-          markerId: MarkerId('id-1'),
+          markerId: const MarkerId('id-1'),
           draggable: true,
-          position: LatLng(currentLocation!.latitude, currentLocation!.longitude),
-          infoWindow: InfoWindow(title: "My Location"),
+          position: LatLng(_currentLocation!.latitude, _currentLocation!.longitude),
+          infoWindow: const InfoWindow(title: "My Location"),
           icon: _mapMarker!));
 
     update();
@@ -76,7 +77,7 @@ class LocationController extends GetxController implements GetxService {
     update();
   }
 
-  void getCurrentAddress({required double latitude, required double longitude, }) async {
+  Future<void> getCurrentAddress({required double latitude, required double longitude, }) async {
     List<Placemark> placers = await placemarkFromCoordinates(latitude, longitude);
     _address = '${placers[0].name}/${placers[0].thoroughfare}-${placers[0].subLocality}, ${placers[0].country}';
     update();

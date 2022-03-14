@@ -1,10 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:learn_flutter/data/model/notification_model.dart';
+import 'package:flutter/foundation.dart';
 
 class NotificationRepo{
 
   Future<void> getMessage(RemoteMessage message) async {
-    print('background message ${message.notification!.body}');
+    if (kDebugMode) {
+      print('background message ${message.notification!.body}');
+    }
   }
 
     // FirebaseMessaging.onMessage.listen((message) {

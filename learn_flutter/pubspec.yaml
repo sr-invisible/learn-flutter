@@ -18,6 +18,8 @@ dependencies:
   get: ^4.6.1
   intl: ^0.17.0
   geocoding: ^2.0.4
+  http: ^0.13.4
+  flutter_typeahead: ^3.2.4
 
 
 dev_dependencies:
@@ -31,7 +33,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/image/
+    - assets/images/
 
   # example:
   # fonts:
