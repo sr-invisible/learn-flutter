@@ -13,5 +13,6 @@
   "message_title" : "Message Title",
   "age" : "Age",
   "pick_your_location" : "Pick Your Location",
+  "search_location" : "search location...",
   "" : ""
 }

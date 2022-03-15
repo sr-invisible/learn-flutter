@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:learn_flutter/controller/location_controller.dart';
 import 'package:learn_flutter/helper/route_helper.dart';
 import 'package:learn_flutter/util/images.dart';
+import 'package:learn_flutter/view/screen/location/search_dialog.dart';
 
 class GoogleMapScreen extends StatefulWidget {
   const GoogleMapScreen({Key? key}) : super(key: key);
@@ -18,12 +18,6 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
   CameraPosition? _cameraPosition;
 
   final CameraPosition _initialCameraPosition = const CameraPosition(target: LatLng(23.777176, 90.399452), zoom: 16);
-
-  @override
-  void initState() {
-    super.initState();
-    // Get.find<LocationController>().getCurrentAddress();
-  }
 
   @override
   void dispose() {
@@ -63,7 +57,9 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                 //         )),
                 // ),
             Positioned(top: 25, left: 5, right: 5, child: InkWell(
-                onTap: () {},
+                onTap: () => Get.dialog(
+                  LocationSearchDialog(mapController: _googleMapController,)
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Container(height: 50, padding: const EdgeInsets.symmetric( horizontal: 10),
@@ -91,11 +87,11 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
             Positioned(left: 100,bottom: 30,
               child: ElevatedButton(onPressed: () {
                 Get.offNamed(RouteHelper.getHomeRoute(locationController.address!));
-                if(locationController.currentLocation != null){
-                  locationController.getCurrentAddress(latitude: _cameraPosition!.target.latitude, longitude: _cameraPosition!.target.longitude);
-                }else {
-                  locationController.getCurrentAddress(latitude: _initialCameraPosition.target.latitude, longitude: _initialCameraPosition.target.longitude);
-                }
+                // if(locationController.currentLocation != null){
+                //   locationController.getCurrentAddress(latitude: _cameraPosition!.target.latitude, longitude: _cameraPosition!.target.longitude);
+                // }else {
+                //   locationController.getCurrentAddress(latitude: _initialCameraPosition.target.latitude, longitude: _initialCameraPosition.target.longitude);
+                // }
 
                   },
                   child:  Padding(padding: const EdgeInsets.symmetric(horizontal: 30),

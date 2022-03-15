@@ -3,14 +3,24 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:learn_flutter/data/model/response/place_auto_completeModel.dart';
+import 'package:learn_flutter/data/repository/location_repo.dart';
+import 'package:learn_flutter/data/model/response/place_details_model.dart';
 
 class LocationController extends GetxController implements GetxService {
+  final LocationRepo locationRepo;
+  LocationController({required this.locationRepo});
+
   GoogleMapController? _googleMapController;
   Position? _currentLocation;
   final Set<Marker> _markers = {};
   BitmapDescriptor? _mapMarker;
   String _address = '';
   CameraPosition? _initialCameraPosition;
+  Predictions? _prediction;
+  Predictions get predictions => _prediction!;
+  List<Predictions>? _predictionList;
+  List<Predictions> get predictionList => _predictionList!;
 
   GoogleMapController get googleMapController => _googleMapController!;
   Set<Marker> get marker => _markers;
@@ -79,15 +89,48 @@ class LocationController extends GetxController implements GetxService {
 
   Future<void> getCurrentAddress({required double latitude, required double longitude, }) async {
     List<Placemark> placers = await placemarkFromCoordinates(latitude, longitude);
-    _address = '${placers[0].name}/${placers[0].thoroughfare}-${placers[0].subLocality}, ${placers[0].country}';
+
+      _address = '${placers[0].name}/${placers[0].thoroughfare}-${placers[0]
+          .subLocality}, ${placers[0].country}';
+
     update();
   }
+  Future<List<Predictions>> searchLocation(BuildContext context, String? searchText) async {
+    if(searchText != null && searchText.isNotEmpty){
 
-  @override
-  void onInit() {
-    getCurrentLocation();
-    setCustomMarker();
-    super.onInit();
+      Response response = await locationRepo.searchLocation(searchText);
+      if(response.statusCode == 200){
+        _predictionList = [];
+        _predictionList!.addAll(PlaceAutoCompleteModel.fromJson(response.body).predictionList);
+      }
+    }
+    return _predictionList!;
+
   }
+  void setLocation(String placeId, String address, GoogleMapController? gMapController) async{
+
+    LatLng latLng = const LatLng(0,0);
+
+    Response response = await locationRepo.placeDetailsByPlaceId(placeId);
+    PlaceDetailsModel _placeDetails = PlaceDetailsModel();
+
+    if(response.statusCode == 200){
+      _placeDetails = PlaceDetailsModel.fromJson(response.body);
+      if(_placeDetails.status == 'OK'){
+        latLng =LatLng(_placeDetails.result!.geometry!.location!.lat!, _placeDetails.result!.geometry!.location!.lng!);
+    }
+    }
+    _address = address;
+    if(gMapController != null) {
+      gMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: latLng,zoom:16)));
+
+    }
+    update();
+
+  }
+
+
+
+
 
 }

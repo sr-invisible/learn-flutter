@@ -20,9 +20,9 @@ class RouteHelper {
 
   static List<GetPage> routes = [
     GetPage(name: initialRoute, page: () => const GoogleMapScreen()),
-    GetPage(name: home, page: () => HomeScreen(address: Get.parameters['address'])),
+    GetPage(name: home, page: () => const HomeScreen()),
     GetPage(name: notification, page: () => const NotificationScreen()),
-    GetPage(name: university, page: () => const UniversityScreen())
+    GetPage(name: university, page: () =>  UniversityScreen())
 
    
   ];
