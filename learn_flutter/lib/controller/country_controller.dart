@@ -9,23 +9,25 @@ class CountryController extends GetxController implements GetxService {
   CountryController({required this.countryRepo});
 
   CountryModel? _countryModel;
-  List<CountryModel>? _countries;
-  List<CountryModel>? _universityDetails;
+  List<CountryModel> _countries = [];
+  final List<CountryModel> _universityDetails = [];
   String? _selectedCountry;
+  bool _isLoading = false;
 
 
   CountryModel get country => _countryModel!;
-  List<CountryModel>? get countries => _countries;
-  List<CountryModel>? get countryDetails => _universityDetails!;
+  List<CountryModel> get countries => _countries;
+  List<CountryModel> get countryDetails => _universityDetails;
   String? get selectedCountry => _selectedCountry;
+  bool get isLoading => _isLoading;
 
 
   Future<void> getAllCountries() async {
     Response response = await countryRepo.getAllCountries();
     if (response.statusCode == 200) {
-      _countries =[];
-      response.body.forEach((country) => _countries!.add(CountryModel.fromJson(country)));
+      response.body.forEach((country) => _countries.add(CountryModel.fromJson(country)));
     }
+    _isLoading = false;
     debugPrint('-----------------cc GetCountries body-----> $_countries');
     update();
   }

@@ -1,7 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 
-class NotificationRepo{
+class NotificationRepo {
 
   Future<void> getMessage(RemoteMessage message) async {
     if (kDebugMode) {

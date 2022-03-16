@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learn_flutter/controller/university_controller.dart';
@@ -21,17 +21,17 @@ class UniversityDetailsDialog extends StatelessWidget {
                   BoxShadow(color: Colors.blue.withOpacity(.5),offset: const Offset(0,1),blurRadius: 5)
                 ]),
                 child:  Column(crossAxisAlignment:CrossAxisAlignment.start,children: [ const SizedBox(height: 25),
-              Text('${'name'.tr} : ${universityController.universityDetails![0].name}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
+              Text('${'name'.tr} : ${universityController.universityDetails[0].name}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
                   const SizedBox(height: 10),
-              Text('${'country'.tr} : ${universityController.universityDetails![0].country}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
+              Text('${'country'.tr} : ${universityController.universityDetails[0].country}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
                   const SizedBox(height: 10),
-              Text('${'alpha_two_code'.tr} : ${universityController.universityDetails![0].alphaTwoCode}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
+              Text('${'alpha_two_code'.tr} : ${universityController.universityDetails[0].alphaTwoCode}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
                   const SizedBox(height: 10),
-              Text('${'state-province'.tr} : ${universityController.universityDetails![0].stateProvince}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
+              Text('${'state-province'.tr} : ${universityController.universityDetails[0].stateProvince}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
                   const SizedBox(height: 10),
-              Text('${'domain'.tr} : ${universityController.universityDetails![0].domains![0]}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
+              Text('${'domain'.tr} : ${universityController.universityDetails[0].domains![0]}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
                   const SizedBox(height: 10),
-                  Text('${'web'.tr} : ${universityController.universityDetails![0].webPages![0]}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
+                  Text('${'web'.tr} : ${universityController.universityDetails[0].webPages![0]}', style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)),
                   const SizedBox(height: 10),
 
                 ])) : Container();

@@ -19,8 +19,8 @@ class LocationController extends GetxController implements GetxService {
   CameraPosition? _initialCameraPosition;
   Predictions? _prediction;
   Predictions get predictions => _prediction!;
-  List<Predictions>? _predictionList;
-  List<Predictions> get predictionList => _predictionList!;
+  List<Predictions> _predictionList =[];
+  List<Predictions> get predictionList => _predictionList;
 
   GoogleMapController get googleMapController => _googleMapController!;
   Set<Marker> get marker => _markers;
@@ -100,11 +100,10 @@ class LocationController extends GetxController implements GetxService {
 
       Response response = await locationRepo.searchLocation(searchText);
       if(response.statusCode == 200){
-        _predictionList = [];
-        _predictionList!.addAll(PlaceAutoCompleteModel.fromJson(response.body).predictionList);
+        _predictionList.addAll(PlaceAutoCompleteModel.fromJson(response.body).predictionList);
       }
     }
-    return _predictionList!;
+    return _predictionList;
 
   }
   void setLocation(String placeId, String address, GoogleMapController? gMapController) async{

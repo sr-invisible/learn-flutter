@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:learn_flutter/controller/location_controller.dart';
@@ -18,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     Get.find<LocationController>().getCurrentAddress;
-    Get.find<RandomUserController>().getAllRandomUser();
+    // Get.find<RandomUserController>().getAllRandomUser();
     return SafeArea(child: Scaffold(
       appBar: AppBar(title:  InkWell( onTap: () => Get.offNamed(RouteHelper.gMap),child:
       GetBuilder<LocationController>(builder: (locationController) {
@@ -63,6 +64,20 @@ class _HomeScreenState extends State<HomeScreen> {
             //   }),
 
             ElevatedButton(onPressed: () => Get.toNamed(RouteHelper.university), child: const Text('University list')),
+            ElevatedButton(onPressed: () => Get.snackbar('GET X Snackbar','Hi, ', snackPosition: SnackPosition.BOTTOM), child: const Text('Snackbar')),
+            ElevatedButton(onPressed: () => Get.bottomSheet(Container(
+              height: 200,
+              decoration:  const BoxDecoration(color: Colors.white,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(5),topRight: Radius.circular(5))),
+
+              child: Wrap(children: const [
+              Text('Bottom Sheet'),
+            ])),
+            isDismissible: true,
+              barrierColor: Colors.white.withOpacity(.1),
+              backgroundColor: Colors.white,
+            ),
+                child: const Text('Bottom Sheet')),
           ],
         ),
       ),
